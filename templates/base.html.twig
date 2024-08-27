@@ -37,6 +37,8 @@
         </nav>
 
         <div class="container my-4">
+            {% include 'partials/flash.html.twig' %}
+            <!-- Affichage des messages flash pour les notifications utilisateurs -->
             {% block body %}{% endblock %}
         </div>
     </body>

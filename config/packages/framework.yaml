@@ -8,6 +8,8 @@ framework:
 
     #esi: true
     #fragments: true
+    # syntaxe pour permettre la modification des methodes utilisés dans le navigateur grâce à un champ caché
+    http_method_override: true
 
 when@test:
     framework:

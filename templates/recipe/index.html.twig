@@ -6,18 +6,44 @@
 <p>
     <strong>Voici la liste complète de nos recettes.</strong>
 </p> 
-    <ul>
-        <!-- Création d'une boucle pour afficher la liste des recttes -->
-        {% for recipe in recipes %}
-            <li>
-                <a href="{{ path('recipe.show', {id: recipe.id, slug: recipe.slug}) }}">{{ recipe.title }}</a>
-            </li>
-        {% endfor %}
+<p>
+    <a class="btn btn-secondary btn-sm" href="{{ path('recipe.create') }}">Créer une nouvelle recette</a>
+</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom de la recette</th>
+                <th>Actions sur recettes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Création d'une boucle pour afficher la liste des recttes -->
+            {% for recipe in recipes %}
+            <tr>
+                <td>
+                    <a class="btn-sm" href="{{ path('recipe.show', {id: recipe.id, slug: recipe.slug}) }}">{{ recipe.title }}</a>
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ path('recipe.edit', {id: recipe.id}) }}">Modifier la recette</a>
+            <!-- Ajout de la fonction de suppression via un formulaire pour permettre à la methode "DELETE" de notre controller de fonctionner dans note navigateur-->
+                    <form action="{{ path('recipe.delete', {id: recipe.id}) }}" method="post">
+                    <!-- Envoi de la requête en méthode POST pour la suppression de la recette -->
+                    <!-- Le input permettra de simuler une requête de type DELETE qui sera compris par le navigateur par une méthode post mais qui effectuera la suppression-->
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger btn-sm">Supprimer la recette</button>
+                    </form>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        
 
         <!-- {% for recipe in recipes %}
         <li>
             <a href="{{ path('recipe.show', {id: 12, slug: 'pate-bolognaise'}) }}">{{ recipe.getTitle() }}</a>
         </li>
         {% endfor %} -->
-    </ul>
+    </table>
 {% endblock %}
