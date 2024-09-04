@@ -6,15 +6,19 @@ use App\Entity\Recipe;
 use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use KnpSnappy\KnpSnappyPdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RecipeController extends AbstractController
 {
+
+
     
     #[Route('/recettes', name: 'recipe.index')]
     public function index(Request $request, RecipeRepository $repository, EntityManagerInterface $em): Response
@@ -95,12 +99,13 @@ class RecipeController extends AbstractController
     
     #[Route('/recettes/{id}/edit', name: 'recipe.edit', methods: ['GET', 'POST'])]
 
-    public function edit(Recipe $recipe, Request $request, EntityManagerInterface $em)
+    public function edit(Recipe $recipe, Request $request, EntityManagerInterface $em, FormFactoryInterface $formFactory)
     {
         // Création de notre formulaire d'édition de recette grâce à la fonction du AbstractController "createForm"
         // pour faire appel à notre formuluaire d'édition créé dans le dossier form 
-
         $form = $this->createForm(RecipeType::class, $recipe);
+        // Création de notre formulaire d'édition grâce au FormFactoryInterface en utilisant ma méthode create
+        // $form = $this->$formFactory->create(RecipeType::class, $recipe);
          // Gestion du formulaire grâce à la méthode "handleRequest" du formulaire
         $form -> handleRequest($request);
         // Si le formulaire a été soumis et valide, on met à jour la recette dans la base de données et on redirige vers la liste des recettes

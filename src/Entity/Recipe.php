@@ -29,7 +29,7 @@ class Recipe
     // La contrainte Assert\Length(min:5) veille à ce que le title soit >= 5 caractère
     // groups: ['Extra'] stipule que la contrainte #Assert\Length fait parti du groupe de contrainte nommé 'Extra' qui sera appelé dans le RecipeType dans "public function configureOptions {validation_groups}"
     // #[Assert\Length(min:5, groups: ['Extra'])]
-    #[Assert\Length()]
+    #[Assert\Length(min:5)]
     private string $title = '';
 
     #[ORM\Column(length: 255)]
@@ -41,7 +41,7 @@ class Recipe
 
     #[ORM\Column(type: Types::TEXT)]
     // La contrainte Assert\Length(min:10) veille à ce que le content soit >= 10 caractère
-    #[Assert\Length(min:10)]
+    #[Assert\Length(min:5)]
     private string $content = '';
 
     #[ORM\Column]
