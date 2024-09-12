@@ -1,0 +1,14 @@
+{% extends 'admin/admin.html.twig' %}
+
+{# Recupération de la valeur de notre variable "slug", et affichage de cette dernière dans notre "title" #}
+
+{% block title "Créer une nouvelle recette" %}
+
+{% block body %}
+    <h1>Création d'une nouvelle recette</h1>
+<!-- Récupération de notre variable form créé dans le RecipeController grâce à la fonction form de symfony-->
+<!-- Le premier form est notre fonction symfony et le deuxième la variable $form de la route "edit" du RecipeController -->
+<!-- Affichage du formulaire au complet -->
+    {{ form(form) }}
+
+{% endblock %}

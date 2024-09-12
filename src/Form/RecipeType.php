@@ -20,13 +20,19 @@ use Symfony\Component\Validator\Constraints\Sequentially;
 
 class RecipeType extends AbstractType
 {
+
+    public function __construct(private FormListenerFactory $listenerFactory)
+    {
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // Modification des label de nos champs du formulaire
         $builder
             ->add('title', TextType::class, ['label' => 'Nom de la recette'])
             ->add('slug', TextType::class, [
-                'label' => 'URL de la recette', 
+                'label' => 'URL de la recette',
                 'required' => false,
                 // empty_data => '' stipule que la base de données peur recevoir une chaîne de caractère vide au niveau du slug
                 'empty_data' => ''
@@ -35,49 +41,11 @@ class RecipeType extends AbstractType
             ->add('duration', TextType::class, ['label' => 'Temps de prépartion ou de cuisson (en minutes)'])
             // Ajout manuel d'un nouveau bouton "Save" à notre formulaire
             ->add('save', SubmitType::class, ['label' => 'Envoyer'])
-            // Ajout d'un événement PRE_SUBMIT pour générer le slug automatiquement lorsque le champ n'est pas remplit
-            ->addEventListener(FormEvents::PRE_SUBMIT, $this->autoSlug(...))
-            // Ajout d'un événement POST_SUBMIT pour ajouter des timestamps automatiquement
-            // ->addEventListener(FormEvents::POST_SUBMIT, [$this, 'attachTimestamps']) ou
-            -> addEventListener(FormEvents::POST_SUBMIT, $this->attachTimestamps(...))
+            // Ajout d'un événement PRE_SUBMIT pour générer le slug automatiquement lorsque le champ n'est pas remplit en utilisant notre contructeur (__construct) qui fait appel au FormListenerFactory.php
+            ->addEventListener(FormEvents::PRE_SUBMIT, $this->listenerFactory->autoSlug('title'))
+            // Ajout d'un événement POST_SUBMIT pour ajouter des timestamps automatiquement en utilisant notre contructeur (__construct) qui fait appel au FormListenerFactory.php
+            -> addEventListener(FormEvents::POST_SUBMIT, $this->listenerFactory->timestamps())
         ;
-    }
-    // Ajout d'une méthode pour gérer l'événement POST_SUBMIT
-
-    public function attachTimestamps(PostSubmitEvent $event): void
-    {
-        // Récupération des données du formulaire soumis
-        $data = $event->getData();
-        // Vérification que le champ est bien une instance de Recipe
-        if(!($data instanceof Recipe))
-        {
-            return;
-        }
-        // Ajout des timestamps au champs créé_at et update_at
-        $data->setUpdateAt(new \DateTimeImmutable());
-        // Si le champ id est vide, on met à jour le champ créé_at
-        if(!$data->getId())
-        {
-            $data->setCreatedAt(new \DateTimeImmutable());
-        }
-    }
-
-
-    // Méthode pour gérer l'événement PRE_SUBMIT
-
-    public function autoSlug(PreSubmitEvent $event)
-    {
-        // Récupération des données du formulaire soumis
-        $data = $event->getData();
-        // Génération d'un slug à partir du titre si le slug est vide
-        if (empty($data['slug'])) {
-            // Utilisation de Symfony\Component\String\Slugger\AsciiSlugger pour générer un slug ASCII
-            $slugger = new AsciiSlugger();
-            // Génération du slug à partir du titre
-            $data['slug'] = $slugger->slug($data['title']);
-            // On réassigne les données à l'événement pour que Symfony valide le formulaire
-            $event->setData($data);
-        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

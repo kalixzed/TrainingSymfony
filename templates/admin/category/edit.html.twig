@@ -1,0 +1,13 @@
+{% extends "admin/admin.html.twig" %}
+
+{% block title %}Modifier une catégorie ~ categorie.name{% endblock %}
+
+{% block body %}
+
+    <h1>Modification d'une catégorie {{ category.name }}</h1>
+    <!-- Récupération de notre variable form créé dans le CategoryController grâce à la fonction form de symfony-->
+    <!-- Le premier form est notre fonction symfony et le deuxième la variable $form de la route "edit" du CategoryController -->
+    <!-- Affichage du formulaire au complet -->
+    {{ form(form) }}
+
+{% endblock body %}

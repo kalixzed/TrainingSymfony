@@ -1,0 +1,21 @@
+<p>
+    Une nouvelle demande de contact a été reçue.
+</p>
+
+<ul>
+    <!-- Affichage du nom de l'utilisateur qui souhaite envoyer le mail -->
+    <li>
+        Nom : {{ data.name }}
+    </li>
+    <!-- Affichage de l'email de l'utilisateur qui souhaite envoyer le mail -->
+    <li>
+        Email : {{ data.email }}
+    </li>
+    
+    <p>
+        <strong>Message</strong>:
+        <br>
+        <!-- Affichage du sujet ou du contenu, le message du mail -->
+        {{ data.message | nl2br }}
+    </p>
+</ul>

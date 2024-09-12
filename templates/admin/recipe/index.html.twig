@@ -1,0 +1,42 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block title %}Liste complète des recettes{% endblock %}
+
+{% block body %}
+<p>
+    <strong>Voici la liste complète de nos recettes.</strong>
+</p>
+<p>
+    <a class="btn btn-success btn-sm" href="{{ path('admin.recipe.create') }}">Créer une nouvelle recette</a>
+</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom de la recette</th>
+                <th style="width: 200px;">Actions sur recettes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Création d'une boucle pour afficher la liste des recttes -->
+            {% for recipe in recipes %}
+            <tr>
+                <td>
+                    <a href="{{ path('admin.recipe.edit', {id: recipe.id}) }}">{{ recipe.title }}</a>
+                </td>
+                <td>
+                    <div class="d-flex gap-1">
+                        <a class="btn btn-warning btn-sm" href="{{ path('admin.recipe.edit', {id: recipe.id}) }}">Modifier</a>
+                <!-- Ajout de la fonction de suppression via un formulaire pour permettre à la methode "DELETE" de notre controller de fonctionner dans note navigateur-->
+                        <form action="{{ path('admin.recipe.delete', {id: recipe.id}) }}" method="post">
+                        <!-- Envoi de la requête en méthode POST pour la suppression de la recette -->
+                        <!-- Le input permettra de simuler une requête de type DELETE qui sera compris par le navigateur par une méthode post mais qui effectuera la suppression-->
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

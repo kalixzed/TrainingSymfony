@@ -24,11 +24,12 @@
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <!-- Ajout d'une fonction "app.current_route ==" pour effectuer des vérifications 
+                            <!-- Ajout d'une fonction "app.current_route starts with pour effectuer des vérifications
                             et emmettre des conditions si la véréfication s'avère vrai ou fausse  -->
-                            <a class="nav-link {{ app.current_route == 'home' ? 'active': '' }}" href="{{ path('home') }}">Accueil</a>
+                            <a class="nav-link {{ app.current_route starts with 'home' ? 'active': '' }}" href="{{ path('home') }}">Accueil</a>
                         </li>
                         <li class="nav-item">
+                            <!-- Utilisation de la fonction starts_with pour vérifier si la route commence par "recipe." -->
                             <a class="nav-link {{ app.current_route starts with 'recipe.' ? 'active': '' }}" href="{{ path('recipe.index') }}">Recettes</a>
                         </li>
                     </ul>
